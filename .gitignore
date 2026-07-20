@@ -161,3 +161,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Brainstorming companion mockups
+.superpowers/
