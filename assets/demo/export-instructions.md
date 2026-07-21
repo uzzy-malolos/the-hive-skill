@@ -1,34 +1,49 @@
 # Export Instructions
 
-This guide explains how to capture the HTML animation and export it as an MP4 or GIF.
+This page explains the automated rendering pipeline for the demo video.
 
-## Prerequisites
-- A screen recording tool (e.g., OBS Studio, ShareX, or a browser extension)
-- `ffmpeg` (for GIF conversion)
+**The old manual capture workflow has been replaced by a one-command Remotion pipeline.** No screen recording or OBS is needed.
 
-## Step 1: Capture the Animation
-1. Open `assets/demo/the-hive-skill-demo.html` in your web browser.
-2. Set the browser zoom level to **100%**.
-3. Set your screen recording tool to capture exactly the **1200x675** animation area (the dark terminal window).
-4. Start recording right as the animation loops back to the start.
-5. Stop recording after exactly 18 seconds (when the animation stops).
-6. Save the recording as an MP4 file, for example: `the-hive-skill-demo.mp4`.
-7. You may want to export the MP4 first if using browser recording.
-
-## Step 2: Convert to GIF
-If you have `ffmpeg` installed, use the following command to generate an optimized, high-quality GIF:
+## Automated render (preferred)
 
 ```bash
-ffmpeg -i the-hive-skill-demo.mp4 -vf "fps=60,scale=1200:-1:flags=lanczos,split[s0][s1];[s0]palettegen=stats_mode=diff[p];[s1][p]paletteuse=dither=bayer:bayer_scale=5" assets/demo/the-hive-skill-demo.gif
+cd demo
+npm run render
 ```
 
-### Recommended GIF Settings
-- **Length**: 18 seconds
-- **Resolution**: 1200x675
-- **FPS**: 60
-- **Colors**: 256 (optimized palette via ffmpeg)
+This will:
+1. Bundle the Remotion composition (`demo/src/`)
+2. Render `assets/demo/the-hive-skill-demo.mp4` (1920×1080, h264, 30fps, ~38s)
+3. Generate `assets/demo/the-hive-skill-demo.gif` (960px wide, 12fps, optimized palette)
 
-### Recommended MP4 Settings
-- **Resolution**: 1200x675
-- **FPS**: 60 (or match source capture)
-- **Bitrate**: 1-2 Mbps (for social sharing)
+### Prerequisites for automated render
+
+- Node.js >= 20 (TypeScript is pinned to ~5.9.3 inside the demo workspace)
+- ffmpeg (for GIF export, optional if you skip `npm run render:gif`)
+
+## Manual GIF generation (if you have an existing MP4)
+
+```bash
+ffmpeg -i the-hive-skill-demo.mp4 -vf "fps=12,scale=960:-1:flags=lanczos,palettegen=stats_mode=diff" palette.png
+ffmpeg -i the-hive-skill-demo.mp4 -i palette.png -lavfi "fps=12,scale=960:-1:flags=lanczos[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=5" the-hive-skill-demo.gif
+rm palette.png
+```
+
+### Recommended settings
+
+| Output | Resolution | FPS | Notes |
+|--------|-----------|-----|-------|
+| MP4 | 1920×1080 | 30 | h264, CRF ~18 |
+| GIF | 960px wide | 12 | 256-color optimized palette |
+
+## Preview before render
+
+To iterate on the composition without a full render:
+
+```bash
+cd demo
+npm run dev
+```
+
+This starts Remotion Studio at `http://localhost:3000` where you can scrub,
+tweak timings, and see changes live.

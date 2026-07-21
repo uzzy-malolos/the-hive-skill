@@ -1,0 +1,25 @@
+{
+  "name": "the-hive-skill-demo",
+  "private": true,
+  "version": "0.3.0",
+  "type": "module",
+  "scripts": {
+    "dev": "remotion studio",
+    "render:mp4": "node scripts/render-mp4.mjs",
+    "render:gif": "bash scripts/render-gif.sh",
+    "render": "node scripts/render-mp4.mjs && bash scripts/render-gif.sh"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.494",
+    "@remotion/cli": "^4.0.494",
+    "@remotion/renderer": "^4.0.494",
+    "@remotion/bundler": "^4.0.494"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "@types/react": "^18.3.0",
+    "@types/web": "^0.0.200"
+  }
+}

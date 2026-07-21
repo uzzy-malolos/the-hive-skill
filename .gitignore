@@ -164,3 +164,8 @@ venv.bak/
 
 # Brainstorming companion mockups
 .superpowers/
+
+# Demo Remotion workspace (source)
+demo/node_modules/
+demo/.cache/
+demo/out/

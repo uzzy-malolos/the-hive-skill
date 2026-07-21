@@ -10,7 +10,11 @@ v0.3.0 provides a disciplined orchestration protocol with structured handoffs, e
 
 ## Demo
 
-![The Hive Skill demo](assets/demo/the-hive-skill-demo.gif)
+[![The Hive Skill demo](assets/demo/the-hive-skill-demo.gif)](assets/demo/the-hive-skill-demo.mp4)
+
+**Watch the cinematic demo video** — a scripted council processes a real bugfix
+end-to-end with structured handoffs, confidence labels, and explicit stop
+conditions.
 
 The Hive Skill instructs one host coding agent to operate through a six-role council.
 
